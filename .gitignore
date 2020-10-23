@@ -1,0 +1,8 @@
+# ignore folders
+.DS_Store
+.vscode
+.cph
+
+# ignore files
+*.prob
+*.bin
