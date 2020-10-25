@@ -10,6 +10,7 @@
 
 using namespace std;
 
+/////////////////////////////////////////// Template ////////////////////////////////////////////
 #ifndef preetam
 #pragma GCC optimize("Ofast")
 #pragma GCC optimize("unroll-loops")
@@ -71,104 +72,23 @@ typedef long double ld;
 typedef long double f80;
 typedef pair<int, int> pii;
 const ll mod = 1e9;
+const double PI = 3.14159265;
 #endif
+/////////////////////////////////////////////////////////////////////////////////////////////////
 
-struct Point 
-{ 
-    double x, y; 
-}; 
+struct point {
+  float x1, x2;
+  int y;
+  point(float x1, float x2, int y) {
+      this->x1 = x1;
+      this->x2 = x2;
+      this->y = y;
+  }
+};
 
-Point p0; 
-
-Point nextToTop(stack<Point> &S) 
-{ 
-    Point p = S.top(); 
-    S.pop(); 
-    Point res = S.top(); 
-    S.push(p); 
-    return res; 
-} 
-  
-
-int swap(Point &p1, Point &p2) 
-{ 
-    Point temp = p1; 
-    p1 = p2; 
-    p2 = temp; 
-} 
-  
-int distSq(Point p1, Point p2) 
-{ 
-    return (p1.x - p2.x)*(p1.x - p2.x) + 
-          (p1.y - p2.y)*(p1.y - p2.y); 
-} 
-
-int orientation(Point p, Point q, Point r) 
-{ 
-    int val = (q.y - p.y) * (r.x - q.x) - 
-              (q.x - p.x) * (r.y - q.y); 
-  
-    if (val == 0) return 0;
-    return (val > 0)? 1: 2;
-} 
-
-int compare(const void *vp1, const void *vp2) 
-{ 
-   Point *p1 = (Point *)vp1; 
-   Point *p2 = (Point *)vp2; 
-  
-
-   int o = orientation(p0, *p1, *p2); 
-   if (o == 0) 
-     return (distSq(p0, *p2) >= distSq(p0, *p1))? -1 : 1; 
-  
-   return (o == 2)? -1: 1; 
-} 
-
-void convexHull(Point points[], int n) 
-{ 
-
-   int ymin = points[0].y, min = 0; 
-   for (int i = 1; i < n; i++) 
-   { 
-     int y = points[i].y;
-     if ((y < ymin) || (ymin == y && 
-         points[i].x < points[min].x)) 
-        ymin = points[i].y, min = i; 
-   } 
-   swap(points[0], points[min]);
-   p0 = points[0]; 
-   qsort(&points[1], n-1, sizeof(Point), compare); 
-   int m = 1;
-   for (int i=1; i<n; i++) 
-   {
-       while (i < n-1 && orientation(p0, points[i], 
-                                    points[i+1]) == 0) 
-          i++; 
-  
-  
-       points[m] = points[i]; 
-       m++;
-   } 
-   if (m < 3) return; 
-   stack<Point> S; 
-   S.push(points[0]); 
-   S.push(points[1]); 
-   S.push(points[2]); 
-
-   for (int i = 3; i < m; i++){
-      while (orientation(nextToTop(S), S.top(), points[i]) != 2) 
-         S.pop(); 
-      S.push(points[i]); 
-   } 
-  
-   while (!S.empty()) 
-   { 
-       Point p = S.top(); 
-       cout << "(" << p.x << ", " << p.y <<")" << endl; 
-       S.pop(); 
-   } 
-} 
+float tang(float deg) {
+    return tan ( deg * PI / 180.0 );
+}
 
 int main() {
 	ios_base::sync_with_stdio(false);
@@ -177,23 +97,35 @@ int main() {
 	ll t=1;
 	cin >> t;
 	while(t--){
-    int n,;
-    double n1,n2,;
-    cin>>n;
-    Point points1[n];
-    Point points2[n];
-    vector<int> label(n);
-    rep(i,0,n-1){
-      cin>>n1>>n2>>lb;
-      if(lb==1){
-          points1[i]={n1,n2};
-      }
-      else{
-          points2[i]={n1,n2};
-      }
-      convexHull(points1, n);
-      convexHull(points2, n);
+        int n;
+        cin >> n;
+        float x1, x2;
+        int y;
+        vector<point> points;
+        rep(i,0,n-1){
+            cin >> x1 >> x2 >> y;
+            points.push_back(point(x1,x2,y));
+        }
+
+        bool separate = false;
+        for(float angle = 0; angle < 360.0; angle += 0.1) {
+            float slope = tang(angle);
+            
+            bool finished = true;
+            for (point& p : points){
+                float yval = p.x1 * slope;
+                if ((p.y == -1 && p.x2 > yval) || (p.y == 1 && p.x2 < yval)) {
+                    finished = false;
+                    break;
+                }
+            }
+            if(finished) {
+                separate = true;
+                break;
+            }
+        }
+        cout << (separate ? "YES" : "NO") << endl;
+        
     }
-	}
 	return 0;
 }
