@@ -10,6 +10,7 @@
 
 using namespace std;
 
+/////////////////////////////////////////// Template ////////////////////////////////////////////
 #ifndef preetam
 #pragma GCC optimize("Ofast")
 #pragma GCC optimize("unroll-loops")
@@ -56,6 +57,7 @@ typedef long double f80;
 typedef pair<int, int> pii;
 const ll mod = 1e9;
 #endif
+/////////////////////////////////////////////////////////////////////////////////////////////////
 
 int main() {
 	ios_base::sync_with_stdio(false);
