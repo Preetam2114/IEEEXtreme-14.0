@@ -1,3 +1,5 @@
 # IEEEXtreme 14.0
- 
-Team Name: AlgoExperts
+#### Team Name: AlgoExperts
+
+The repository consist of questions of IEEEXtreme 14.0 Held on 24th-25th Oct 2020.
+The Solutions are either coded in Python or C++, The testcases passing percentage for the solutions are also provided (includes during and after contest).
